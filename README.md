@@ -61,6 +61,8 @@ Info : Listening on port 4444 for telnet connections
 ICLOUD_KEY=<> ./locations.py tracker.json
 ```
 
+You can retrieve ICLOUD_KEY using this [get-icloud-key.py](./get-icloud-key.py)
+
 trackers.json example
 
 ```json
