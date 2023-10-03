@@ -1,7 +1,25 @@
-# nrf51822 flashing
+# OpenHaystake Toolkit
+
+
+# Keygen
 
 ```shell
- ./flash.py --key-id=$KEY_ID
+./keygen.py
+```
+
+Generates a new airtag keys
+```json
+{
+    "key_id": "DIf2Od7NcEfYHsFVQTC/xTUFecr3J8B0KoPfJHsXRQM=",
+    "advertisement_key": "f9dQjCafB68gi9ZKLH/iQsN9tScDX+zXF4BfZGDqoyA=",
+    "private_key": "7b1MPYzazUCpDzTUDO9RM2h+2VytFGe0Sdua8A=="
+}
+```
+
+# Flashing
+
+```shell
+ ./flash.py --advertisement-key=$KEY
 
 Open On-Chip Debugger 0.12.0
 Licensed under GNU GPL v2
@@ -36,4 +54,22 @@ Warn : Adding extra erase range, 0x0000374c .. 0x000037ff
 ** Programming Finished **
 Info : Listening on port 6666 for tcl connections
 Info : Listening on port 4444 for telnet connections
+```
+
+## Get locations
+```shell
+./locations.py tracker.json
+```
+
+trackers.json example
+
+```json
+[
+	{
+		"name": "My tracker",
+		"key_id": "DIf2Od7NcEfYHsFVQTC/xTUFecr3J8B0KoPfJHsXRQM=",
+		"advertisement_key": "f9dQjCafB68gi9ZKLH/iQsN9tScDX+zXF4BfZGDqoyA=",
+		"private_key": "7b1MPYzazUCpDzTUDO9RM2h+2VytFGe0Sdua8A=="
+	}
+]
 ```
