@@ -58,7 +58,7 @@ Info : Listening on port 4444 for telnet connections
 
 ## Get locations
 ```shell
-./locations.py tracker.json
+ICLOUD_KEY=<> ./locations.py tracker.json
 ```
 
 trackers.json example
