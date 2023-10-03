@@ -1,11 +1,12 @@
-"""Script to print locations from a given tracker.toml file."""
-from dataclasses import dataclass
+#!/usr/bin/env python3
+
 import argparse
 from openhaybike.types import BikeTracker
 from openhaybike.locations import get_locations_of_trackers
-from openhaybike.config import CONFIG
 import json
+import os
 
+icloud_key = os.environ.get("ICLOUD_KEY")
 
 if __name__ == "__main__":
 
@@ -23,4 +24,4 @@ if __name__ == "__main__":
         private_key=tracker.get("private_key"),
     ) for tracker in keys]
 
-    print(get_locations_of_trackers(trackers, CONFIG.icloud_key, 24))
+    print(get_locations_of_trackers(trackers, icloud_key, 24))
