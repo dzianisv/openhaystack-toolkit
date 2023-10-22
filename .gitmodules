@@ -1,0 +1,3 @@
+[submodule "openhaybike"]
+	path = openhaybike
+	url = https://gitlab.com/eselac/openhaybike
