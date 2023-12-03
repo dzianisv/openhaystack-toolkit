@@ -88,3 +88,7 @@ trackers.json example
 	}
 ]
 ```
+
+## References
+
+[Low-power consumption firmare](https://github.com/acalatrava/openhaystack-firmware/releases/tag/0.1)

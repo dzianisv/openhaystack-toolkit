@@ -9,11 +9,14 @@ import subprocess
 import argparse
 
 def flash(advertisement_key: str):
-    with open("firmware/nrf51822.bin", "rb") as src_firmware, \
+    with open("firmware/nrf51.bin", "rb") as src_firmware, \
         tempfile.NamedTemporaryFile("wb", delete=True) as dst_firmware:
 
         decoded_bytes = base64.b64decode(advertisement_key)
         data = src_firmware.read()
+        if b"OFFLINEFINDINGPUBLICKEYHERE!" not in data:
+            raise Exception("Invalid firmware file. Adverisement key placeholder is not found")
+
         output_string = re.sub(b"OFFLINEFINDINGPUBLICKEYHERE!", decoded_bytes, data)
         dst_firmware.write(output_string)
 
