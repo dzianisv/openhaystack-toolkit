@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 cryptography = "*"
+pyobjc = "*"
+requests = "*"
 openhaybike = {path = "./openhaybike"}
 
 [dev-packages]
