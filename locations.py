@@ -4,13 +4,13 @@ import argparse
 import json
 import os
 import sys
-from lib.icloud import get_icloud_key
+from lib.icloud import get_icloud_key_cached
 from openhaybike.types import BikeTracker
 from openhaybike.locations import get_locations_of_trackers
 
 if __name__ == "__main__":
     try:
-        icloud_key = get_icloud_key()
+        icloud_key = get_icloud_key_cached()
     except ValueError as e:
         sys.stderr.write("Failed to retrieve an icloud key. Incorrect password?", str(e))
         sys.exit(1)

@@ -17,7 +17,7 @@ import time
 
 ICLOUD_CACHE_FILE = os.path.join(os.environ.get("HOME"), ".config", "icloud")
 
-def is_cache_expired(file_path):
+def is_cache_valid(file_path):
     """
     Check if the file at `file_path` was modified less than 12 hours ago.
 
@@ -27,6 +27,9 @@ def is_cache_expired(file_path):
     Returns:
     bool: True if the file was modified less than 12 hours ago, False otherwise.
     """
+    if not os.path.exists(file_path):
+        return False
+
     # Get the last modification time of the file
     last_modified_time = os.path.getmtime(file_path)
 
@@ -79,16 +82,15 @@ def get_icloud_key() -> str:
     return icloud_key
 
 def get_icloud_key_cached() -> str:
-    if is_cache_expired(ICLOUD_CACHE_FILE):
+    if is_cache_valid(ICLOUD_CACHE_FILE):
+        with open(ICLOUD_CACHE_FILE, "r", encoding='utf8') as f:
+            return f.read()
+    else:
         key = get_icloud_key().decode('ascii')
-        with open(ICLOUD_CACHE_FILE, "w", 'utf8') as f:
+        with open(ICLOUD_CACHE_FILE, "w", encoding='utf8') as f:
             f.write(key)
             return key
-    else:
-        with open(ICLOUD_CACHE_FILE, "r", 'utf8') as f:
-            return f.read()
-
-
+        
 if __name__ == "__main__":
     print(get_icloud_key_cached())
 
