@@ -11,6 +11,39 @@ from cryptography.hazmat.backends import default_backend
 from openhaybike.utils import unpad, decrypt
 from openhaybike.keychain import read_keychain
 
+
+import os
+import time
+
+ICLOUD_CACHE_FILE = os.path.join(os.environ.get("HOME"), ".config", "icloud")
+
+def is_cache_expired(file_path):
+    """
+    Check if the file at `file_path` was modified less than 12 hours ago.
+
+    Args:
+    file_path (str): The path to the file.
+
+    Returns:
+    bool: True if the file was modified less than 12 hours ago, False otherwise.
+    """
+    # Get the last modification time of the file
+    last_modified_time = os.path.getmtime(file_path)
+
+    # Get the current time
+    current_time = time.time()
+
+    # Calculate the difference in hours
+    hours_difference = (current_time - last_modified_time) / 3600
+
+    # Check if the difference is less than 12 hours
+    return hours_difference < 23
+
+# Example usage:
+# result = is_modified_within_12_hours("path/to/your/file.txt")
+# print(result)
+
+
 def get_icloud_key() -> str:
     keychain = read_keychain()
     password = getpass("Keychain password: ")
@@ -45,7 +78,17 @@ def get_icloud_key() -> str:
     )
     return icloud_key
 
+def get_icloud_key_cached() -> str:
+    if is_cache_expired(ICLOUD_CACHE_FILE):
+        key = get_icloud_key().decode('ascii')
+        with open(ICLOUD_CACHE_FILE, "w", 'utf8') as f:
+            f.write(key)
+            return key
+    else:
+        with open(ICLOUD_CACHE_FILE, "r", 'utf8') as f:
+            return f.read()
+
 
 if __name__ == "__main__":
-    print(get_icloud_key().decode('ascii'))
+    print(get_icloud_key_cached())
 

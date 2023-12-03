@@ -21,7 +21,7 @@ def flash(advertisement_key: str):
             'openocd',
             '-f', 'interface/stlink-v2.cfg',
             '-f', 'target/nrf51.cfg',
-            '-c', f'init; halt; nrf51 mass_erase; program {dst_firmware.name} verify; program {dst_firmware.name}; resume;'
+            '-c', f'init; halt; nrf51 mass_erase; program {dst_firmware.name} verify; program {dst_firmware.name}; exit;'
         ])
 
 if __name__ == "__main__":

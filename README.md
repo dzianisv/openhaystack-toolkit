@@ -1,13 +1,21 @@
 # OpenHaystake Toolkit
 
-
-# Keygen
+## Install Requirements
 
 ```shell
-./keygen.py
+brew install python3 openocd
+python3 -m pipenv
+git submodule update --init --recursive
+pipenv install
 ```
 
-Generates a new airtag keys
+## Generate keys
+
+```shell
+pipenv run ./keygen.py
+```
+
+Generates a new airtag keys, use an advertisement_key for the next ste
 ```json
 {
     "key_id": "DIf2Od7NcEfYHsFVQTC/xTUFecr3J8B0KoPfJHsXRQM=",
@@ -16,11 +24,15 @@ Generates a new airtag keys
 }
 ```
 
-# Flashing
+## Flashing
 
 ```shell
- ./flash.py --advertisement-key=$KEY
+pipenv run ./flash.py --advertisement-key=$KEY
+```
+Wait for `** Programming Finished **`.
 
+It should output like this
+```
 Open On-Chip Debugger 0.12.0
 Licensed under GNU GPL v2
 For bug reports, read
@@ -52,16 +64,17 @@ xPSR: 0xc1000000 pc: 0x00000c3c msp: 0x20004000
 ** Programming Started **
 Warn : Adding extra erase range, 0x0000374c .. 0x000037ff
 ** Programming Finished **
-Info : Listening on port 6666 for tcl connections
-Info : Listening on port 4444 for telnet connections
 ```
 
-## Get locations
+## Test that it works
+
+To get locations of the tracker
+Put keys in array into "trackers.json" as in examble below
+It needs time to advertise the tracker by the nearby iPhones, wait about 10m
+
 ```shell
-ICLOUD_KEY=<> ./locations.py tracker.json
+pipenv run ./locations.py tracker.json
 ```
-
-You can retrieve ICLOUD_KEY using this [get-icloud-key.py](./get-icloud-key.py)
 
 trackers.json example
 
