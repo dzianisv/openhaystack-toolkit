@@ -218,12 +218,10 @@ class AirTagCrypto:
             self._private_key = self.__generate_new_private_key()
 
     def get_advertisement_key(self) -> str:
-        digest = hashes.Hash(hashes.SHA256())
-        digest.update(self
-                      .__derive_elliptic_curve_private_key(self._private_key, ec.SECP224R1())
-                      .public_key()
-                      .public_bytes(Encoding.X962, PublicFormat.CompressedPoint)[1:])
-        return base64.b64encode(digest.finalize()).decode()
+        """Implementation of the [Openhaystack public key](https://github.com/seemoo-lab/openhaystack/blob/7d72fa1ac19d2a9f6dec43011be07df8976a8b02/OpenHaystack/OpenHaystack/BoringSSL/BoringSSL.m#L125) derevation function"""
+        public_key = self.__derive_elliptic_curve_private_key(self._private_key, ec.SECP224R1()).public_key().public_bytes(Encoding.X962, PublicFormat.CompressedPoint)[1:]
+        assert(len(public_key) == 28)
+        return base64.b64encode(public_key).decode()
 
     def get_public_key(self) -> str:
         digest = hashes.Hash(hashes.SHA256())
