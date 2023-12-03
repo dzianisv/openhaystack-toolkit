@@ -17,11 +17,14 @@ if __name__ == "__main__":
 
     with open(args.config, 'r', encoding='utf8') as f:
         keys = json.load(f)
+    
+    if type(keys) is dict:
+        keys = [keys]
 
     trackers = [ BikeTracker(
-        name=tracker.get("name"),
+        name=tracker.get("name", tracker.get("key_id")),
         key_id=tracker.get("key_id"),
-        advertisement_key="",
+        advertisement_key=tracker.get("advertisement_key"),
         private_key=tracker.get("private_key"),
     ) for tracker in keys]
 
