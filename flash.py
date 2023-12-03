@@ -9,16 +9,21 @@ import subprocess
 import argparse
 
 def flash(advertisement_key: str):
+    advertisement_key_bin = base64.b64decode(advertisement_key)
+    pattern = b"OFFLINEFINDINGPUBLICKEYHERE!"
+    advertisement_key_len = len(advertisement_key_bin)
+    pattern_len = len(pattern)
+    if advertisement_key_len != pattern_len:
+        raise ValueError(f"Invalid advertisement key lenght. Expected {pattern_len}, provided key lenght is {advertisement_key_len}")
+
     with open("firmware/nrf51.bin", "rb") as src_firmware, \
         tempfile.NamedTemporaryFile("wb", delete=True) as dst_firmware:
-
-        decoded_bytes = base64.b64decode(advertisement_key)
         data = src_firmware.read()
-        if b"OFFLINEFINDINGPUBLICKEYHERE!" not in data:
+        if  pattern not in data:
             raise Exception("Invalid firmware file. Adverisement key placeholder is not found")
 
-        output_string = re.sub(b"OFFLINEFINDINGPUBLICKEYHERE!", decoded_bytes, data)
-        dst_firmware.write(output_string)
+        patched_firmare_bin = re.sub(pattern, advertisement_key_bin, data)
+        dst_firmware.write(patched_firmare_bin)
 
         subprocess.run([
             'openocd',
