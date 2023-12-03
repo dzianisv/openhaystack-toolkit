@@ -47,9 +47,14 @@ def is_cache_valid(file_path):
 # print(result)
 
 
-def get_icloud_key() -> str:
+def get_icloud_key(password_fn = None) -> str:
     keychain = read_keychain()
-    password = getpass("Keychain password: ")
+
+    if password_fn is None:
+        password = getpass("Keychain password: ")
+    else:
+        password = password_fn()
+
     master_key = PBKDF2HMAC(
         algorithm=hashes.SHA1(),
         length=24,
@@ -81,12 +86,12 @@ def get_icloud_key() -> str:
     )
     return icloud_key
 
-def get_icloud_key_cached() -> str:
+def get_icloud_key_cached(password_fn = None) -> str:
     if is_cache_valid(ICLOUD_CACHE_FILE):
         with open(ICLOUD_CACHE_FILE, "r", encoding='utf8') as f:
             return f.read()
     else:
-        key = get_icloud_key().decode('ascii')
+        key = get_icloud_key(password_fn).decode('ascii')
         with open(ICLOUD_CACHE_FILE, "w", encoding='utf8') as f:
             f.write(key)
             return key
