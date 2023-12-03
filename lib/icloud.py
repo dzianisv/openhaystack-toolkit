@@ -39,12 +39,8 @@ def is_cache_valid(file_path):
     # Calculate the difference in hours
     hours_difference = (current_time - last_modified_time) / 3600
 
-    # Check if the difference is less than 12 hours
-    return hours_difference < 23
-
-# Example usage:
-# result = is_modified_within_12_hours("path/to/your/file.txt")
-# print(result)
+    # Check if the difference is less than 7 days
+    return hours_difference < 24 * 7
 
 
 def get_icloud_key(password_fn = None) -> str:
