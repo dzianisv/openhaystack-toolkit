@@ -5,7 +5,7 @@ from openhaybike.types import BikeTracker
 from openhaybike.locations import get_locations_of_trackers
 import json
 import os
-from icloud import get_icloud_key
+from lib.icloud import get_icloud_key
 
 icloud_key = get_icloud_key()
 
