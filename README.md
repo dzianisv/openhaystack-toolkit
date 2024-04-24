@@ -1,6 +1,6 @@
 # OpenHaystake Toolkit
 
-## Install Requirements
+## 1. Install Requirements
 
 ```shell
 brew install python3 openocd
@@ -9,13 +9,16 @@ git submodule update --init --recursive
 pipenv install
 ```
 
-## Generate keys
+## 2. Generate keys
+
+Generate a key pair, a public key will be flashed  in step 4 to the MCU with firmware. 
+A private key will be used to get the tracker location from the Apple server.
 
 ```shell
 pipenv run ./keygen.py
 ```
 
-Generates a new airtag keys, use an advertisement_key for the next ste
+Here is aexample of the keys
 ```json
 {
     "key_id": "DIf2Od7NcEfYHsFVQTC/xTUFecr3J8B0KoPfJHsXRQM=",
@@ -24,13 +27,17 @@ Generates a new airtag keys, use an advertisement_key for the next ste
 }
 ```
 
-## Connect MCU to STLink
+## 3. Connect MCU to STLink
+
+To flash a firmware to the MCU, you have to connect STLink to the computer and MCU.
 
 ![](img/0.webp)
 ![](img/1.webp)
 ![](img/2.webp)
 
-## Flashing
+## 4. Flashing
+
+Next step, flash the firmware to the MCU.
 
 ```shell
 pipenv run ./flash.py --advertisement-key=$KEY
@@ -72,10 +79,10 @@ Warn : Adding extra erase range, 0x0000374c .. 0x000037ff
 ** Programming Finished **
 ```
 
-## Test that it works
+## 5. Test that it works
 
-To get locations of the tracker
-Put keys in array into "trackers.json" as in examble below
+To get the locations of the tracker
+Put keys in the array into "trackers.json" as in example below
 It needs time to advertise the tracker by the nearby iPhones, wait about 10m
 
 ```shell
